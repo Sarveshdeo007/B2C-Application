@@ -1,0 +1,39 @@
+server:
+  port: ${PORT:8080}
+
+logging:
+  level:
+    root: INFO
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2: DEBUG
+    org.springframework.web: DEBUG
+    com.example.azureb2c: DEBUG
+    org.springframework.security.oauth2.client.endpoint: TRACE
+    org.springframework.security.oauth2.client.registration: TRACE
+    org.springframework.security.oauth2.core: TRACE
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          azure:
+            client-id: ${AZURE_CLIENT_ID}
+            client-secret: ${AZURE_CLIENT_SECRET}
+            client-authentication-method: client_secret_post
+            authorization-grant-type: authorization_code
+            scope:
+              - openid
+            redirect-uri: https://grook-production.up.railway.app/login/oauth2/code/azure
+        provider:
+          azure:
+            authorization-uri: ${AZURE_AUTH_URI:https://volvogroupiddev.b2clogin.com/volvogroupiddev.onmicrosoft.com/oauth2/v2.0/authorize?p=b2c_1a_g_volvoglobal_signup_signin}
+            token-uri: ${AZURE_TOKEN_URI:https://volvogroupiddev.b2clogin.com/volvogroupiddev.onmicrosoft.com/oauth2/v2.0/token?p=b2c_1a_g_volvoglobal_signup_signin}
+            jwk-set-uri: ${AZURE_JWK_URI:https://volvogroupiddev.b2clogin.com/volvogroupiddev.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_g_volvoglobal_signup_signin}
+            user-info-uri: ${AZURE_USER_INFO_URI:https://volvogroupiddev.b2clogin.com/volvogroupiddev.onmicrosoft.com/openid/userinfo}
+            user-name-attribute: name
+
+  thymeleaf:
+    cache: false
+    prefix: classpath:/templates/
+    suffix: .html

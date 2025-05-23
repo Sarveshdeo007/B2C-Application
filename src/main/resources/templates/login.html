@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Grook - Sign In</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css;">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            background-color: white;
+            text-align: center;
+        }
+        .logo {
+            width: 100px;
+            height: 100px;
+            margin-bottom: 25px;
+            object-fit: contain;
+            background-color: black;
+            border-radius: 50%;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .welcome-text {
+            font-size: 28px;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            background-color: #0078d4;
+            border: none;
+            color: white;
+            border-radius: 5px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-login:hover {
+            background-color: #006abc;
+            color: white;
+        }
+        .alert {
+            margin-bottom: 20px;
+            border-radius: 5px;
+            padding: 12px;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container">
+        <div class="login-container">
+            <img th:src="@{/images/logo.png}" alt="Grook" class="logo">
+            <div class="welcome-text">Welcome to Grook</div>
+
+            <div th:if="${param.logout}" class="alert alert-success">
+                You have been logged out successfully.
+            </div>
+
+            <div th:if="${param.error}" class="alert alert-danger">
+                Authentication failed. Please try again.
+            </div>
+
+            <a th:href="@{/oauth2/authorization/azure}" class="btn-login" onclick="handleLogin(event)">
+                Sign in with Azure B2C
+            </a>
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        // Clear any remaining auth data on logout
+        if (window.location.search.includes('logout')) {
+            localStorage.clear();
+            sessionStorage.clear();
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            sessionStorage.setItem('preLoginUrl', window.location.href);
+            const href = event.currentTarget.getAttribute('href');
+            window.location.href = href;
+        }
+
+        // Function to extract token from URL
+        function getIdTokenFromUrl() {
+            const hash = window.location.hash;
+            if (hash && hash.includes('id_token=')) {
+                const startIndex = hash.indexOf('id_token=') + 'id_token='.length;
+                const endIndex = hash.indexOf('&', startIndex);
+                if (endIndex === -1) {
+                    return hash.substring(startIndex);
+                }
+                return hash.substring(startIndex, endIndex);
+            }
+            return null;
+        }
+
+        // Handle page load
+        window.addEventListener('DOMContentLoaded', function() {
+            const idToken = getIdTokenFromUrl();
+            if (idToken) {
+                console.log("Found id_token, redirecting to home");
+                // Store token in sessionStorage for home page
+                sessionStorage.setItem('id_token', idToken);
+                // Redirect directly to home with token
+                window.location.href = '/home?id_token=' + encodeURIComponent(idToken);
+                return;
+            }
+
+            // Check if we're on error page with a hash
+            if (window.location.search.includes('error') && window.location.hash) {
+                const idToken = getIdTokenFromUrl();
+                if (idToken) {
+                    console.log("Found id_token on error page, redirecting to home");
+                    // Store token in sessionStorage for home page
+                    sessionStorage.setItem('id_token', idToken);
+                    window.location.href = '/home?id_token=' + encodeURIComponent(idToken);
+                }
+            }
+        });
+    </script>
+</body>
+</html> 

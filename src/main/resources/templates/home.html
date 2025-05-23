@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Grook - Dashboard</title>
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css;">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .profile-container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            background-color: white;
+        }
+        .logo {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            background-color: black;
+            border-radius: 50%;
+            padding: 10px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        .info-label {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        .info-value {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #0d6efd;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .btn-delete {
+            background-color: #dc3545;
+            color: white;
+        }
+        .btn-delete:hover {
+            background-color: #bb2d3b;
+            color: white;
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div class="brand">
+                <img th:src="@{/images/logo.png}" alt="Grook" class="logo">
+                <span>Grook</span>
+            </div>
+            <form action="/logout" method="post" style="display: inline;">
+                <button type="submit" class="btn btn-danger">Sign Out</button>
+            </form>
+        </div>
+
+        <div class="profile-container">
+            <h2>Profile Information</h2>
+            <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+
+            <div>
+                <div class="info-label">Name:</div>
+                <div class="info-value" th:text="${name}">John Doe</div>
+            </div>
+
+            <div>
+                <div class="info-label">Email:</div>
+                <div class="info-value" th:text="${email}">john@example.com</div>
+            </div>
+
+            <div class="action-buttons">
+                <a href="/profile/edit" class="btn btn-primary" onclick="showLoading()">Update Profile</a>
+                <a href="/profile/reset-password" class="btn btn-warning" onclick="showLoading()">Reset Password</a>
+                <a href="/profile/delete" class="btn btn-delete" onclick="return confirmDelete()">Delete Profile</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Clean up URL after processing token
+        if (window.location.search.includes('id_token')) {
+            window.history.replaceState({}, document.title, '/home');
+        }
+
+        // Show loading overlay
+        function showLoading() {
+            document.getElementById('loadingOverlay').style.display = 'flex';
+        }
+
+        // Confirm delete action
+        function confirmDelete() {
+            if (confirm('Are you sure you want to delete your profile? This action cannot be undone.')) {
+                showLoading();
+                return true;
+            }
+            return false;
+        }
+
+        // Show loading overlay immediately if we have an id_token
+        if (window.location.search.includes('id_token')) {
+            showLoading();
+        }
+
+        // Hide loading overlay when page is fully loaded
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                document.getElementById('loadingOverlay').style.display = 'none';
+            }, 500); // Keep overlay for at least 500ms to ensure smooth transition
+        });
+    </script>
+</body>
+</html>
