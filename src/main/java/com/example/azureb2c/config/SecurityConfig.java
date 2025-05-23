@@ -44,7 +44,7 @@ import java.util.Base64;
 @EnableWebSecurity
 public class SecurityConfig {
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
-    private static final String END_SESSION_ENDPOINT = "https://volvogroupiddev.b2clogin.com/volvogroupiddev.onmicrosoft.com/oauth2/v2.0/logout?p=b2c_1a_g_volvoglobal_signup_signin";
+    private static final String END_SESSION_ENDPOINT = "https://volvogroupextid.ciamlogin.com/volvogroupextid.onmicrosoft.com/oauth2/v2.0/logout?p=b2c_1a_g_volvoglobal_signup_signin";
 
     private final ClientRegistrationRepository clientRegistrationRepository;
     private final B2CAuthenticationSuccessHandler successHandler;

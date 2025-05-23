@@ -24,13 +24,13 @@ spring:
             authorization-grant-type: authorization_code
             scope:
               - openid
-            redirect-uri: https://grook-production.up.railway.app/login/oauth2/code/azure
+            redirect-uri: https://web-production-326a1.up.railway.app/
         provider:
           azure:
-            authorization-uri: ${AZURE_AUTH_URI:https://volvogroupiddev.b2clogin.com/volvogroupiddev.onmicrosoft.com/oauth2/v2.0/authorize?p=b2c_1a_g_volvoglobal_signup_signin}
-            token-uri: ${AZURE_TOKEN_URI:https://volvogroupiddev.b2clogin.com/volvogroupiddev.onmicrosoft.com/oauth2/v2.0/token?p=b2c_1a_g_volvoglobal_signup_signin}
-            jwk-set-uri: ${AZURE_JWK_URI:https://volvogroupiddev.b2clogin.com/volvogroupiddev.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_g_volvoglobal_signup_signin}
-            user-info-uri: ${AZURE_USER_INFO_URI:https://volvogroupiddev.b2clogin.com/volvogroupiddev.onmicrosoft.com/openid/userinfo}
+            authorization-uri: ${AZURE_AUTH_URI:https://volvogroupextid.ciamlogin.com/volvogroupextid.onmicrosoft.com/oauth2/v2.0/authorize?client_id=03ceac42-7e9c-418f-9730-0029e9973f10&nonce=PHieAa6jps&redirect_uri=https://web-production-326a1.up.railway.app/&scope=openid&response_type=id_token&prompt=login}
+            token-uri: ${AZURE_TOKEN_URI:https://volvogroupextid.ciamlogin.com/volvogroupextid.onmicrosoft.com/oauth2/v2.0/token?p=b2c_1a_g_volvoglobal_signup_signin}
+            jwk-set-uri: ${AZURE_JWK_URI:https://volvogroupextid.ciamlogin.com/volvogroupextid.onmicrosoft.com/discovery/v2.0/keys?p=b2c_1a_g_volvoglobal_signup_signin}
+            user-info-uri: ${AZURE_USER_INFO_URI:https://volvogroupextid.ciamlogin.com/volvogroupextid.onmicrosoft.com/openid/userinfo}
             user-name-attribute: name
 
   thymeleaf:

@@ -32,11 +32,11 @@ public class ProfileController {
                 logger.debug("Starting profile edit flow for user: {}",
                                 authentication != null ? authentication.getName() : "anonymous");
 
-                String redirectUri = "https://grook-production.up.railway.app/login/oauth2/code/azure";
+                String redirectUri = "https://web-production-326a1.up.railway.app/";
                 String nonce = generateNonce();
 
                 String url = String.format(
-                                "https://volvogroupiddev.b2clogin.com/volvogroupiddev.onmicrosoft.com/oauth2/v2.0/authorize"
+                                "https://volvogroupextid.ciamlogin.com/volvogroupextid.onmicrosoft.com/oauth2/v2.0/authorize"
                                                 +
                                                 "?p=B2C_1A_SARVESHVOLVOGLOBAL_PROFILEEDIT" +
                                                 "&client_id=%s" +
@@ -56,11 +56,11 @@ public class ProfileController {
                 logger.debug("Starting password reset flow for user: {}",
                                 authentication != null ? authentication.getName() : "anonymous");
 
-                String redirectUri = "https://grook-production.up.railway.app/login/oauth2/code/azure";
+                String redirectUri = "https://web-production-326a1.up.railway.app/";
                 String nonce = generateNonce();
 
                 String url = String.format(
-                                "https://volvogroupiddev.b2clogin.com/volvogroupiddev.onmicrosoft.com/oauth2/v2.0/authorize"
+                                "https://volvogroupextid.ciamlogin.com/volvogroupextid.onmicrosoft.com/oauth2/v2.0/authorize"
                                                 +
                                                 "?p=B2C_1A_SARVESHVOLVOGLOBAL_PASSWORDRESET" +
                                                 "&client_id=%s" +
@@ -84,11 +84,11 @@ public class ProfileController {
                 // Set a session attribute to track delete account flow
                 request.getSession().setAttribute("delete_account_flow", true);
 
-                String redirectUri = "https://grook-production.up.railway.app/login/oauth2/code/azure";
+                String redirectUri = "https://web-production-326a1.up.railway.app/";
                 String nonce = generateNonce();
 
                 String url = String.format(
-                                "https://volvogroupiddev.b2clogin.com/volvogroupiddev.onmicrosoft.com/oauth2/v2.0/authorize"
+                                "https://volvogroupextid.ciamlogin.com/volvogroupextid.onmicrosoft.com/oauth2/v2.0/authorize"
                                                 +
                                                 "?p=B2C_1A_VOLVOGLOBAL_DELETEACCOUNT" +
                                                 "&client_id=%s" +
